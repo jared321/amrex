@@ -341,9 +341,18 @@ public:
                  const Geometry& crse_geom);
 
     void OverwriteFlux (Array<MultiFab*,AMREX_SPACEDIM> const& crse_fluxes,
-                        Real scale, int srccomp, int destcomp, int numcomp,
+                        Real scale, 
+                        int srccomp, 
+                        int destcomp, 
+                        int numcomp,
                         const Geometry& crse_geom);
 
+    void RefluxAndZero (Array<MultiFab*,AMREX_SPACEDIM> const& crse_fluxes,
+                        Real scale, 
+                        int srccomp, 
+                        int destcomp, 
+                        int numcomp,
+                        const Geometry& crse_geom);
 
     /**
     * \brief Set internal borders to zero

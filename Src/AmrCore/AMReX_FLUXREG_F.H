@@ -14,6 +14,12 @@ extern "C"
                                 const int* mask, const int* mlo, const int* mhi,
                                 const int* ncomp, const int* idim, const amrex_real* scale);
 
+    void amrex_frinterfaceadd_cfb (const int* lo, const int* hi,
+                                   amrex_real* dst, const int* dlo, const int* dhi,
+                                   const amrex_real* src, const int* slo, const int* shi,
+                                   const int* mask, const int* mlo, const int* mhi,
+                                   const int* ncomp, const int* idim, const amrex_real* scale);
+
 #ifdef __cplusplus
 }
 #endif

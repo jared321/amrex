@@ -22,6 +22,7 @@ module amrex_fluxregister_module
      procedure :: setval        => amrex_fluxregister_setval
      procedure :: reflux        => amrex_fluxregister_reflux
      procedure :: overwrite     => amrex_fluxregister_overwrite
+     procedure :: refluxandzero => amrex_fluxregister_refluxandzero
      procedure, private :: amrex_fluxregister_assign
      procedure, private :: amrex_fluxregister_fineadd
      procedure, private :: amrex_fluxregister_fineadd_1fab
@@ -100,6 +101,14 @@ module amrex_fluxregister_module
        type(c_ptr), intent(in) :: flxs(*)
        real(amrex_real), value :: scale
      end subroutine amrex_fi_fluxregister_overwrite
+
+     subroutine amrex_fi_fluxregister_refluxandzero (fr, flxs, scale, geom) bind(c)
+       import
+       implicit none
+       type(c_ptr), value :: fr, geom
+       type(c_ptr), intent(in) :: flxs(*)
+       real(amrex_real), value :: scale
+     end subroutine amrex_fi_fluxregister_refluxandzero
   end interface
 
 contains
@@ -222,6 +231,19 @@ contains
     end do
     call amrex_fi_fluxregister_overwrite(this%p, mf, scale, amrex_geom(this%flev-1)%p)
   end subroutine amrex_fluxregister_overwrite
+
+  subroutine amrex_fluxregister_refluxandzero (this, fluxes, scale)
+    use amrex_amrcore_module, only : amrex_geom
+    class(amrex_fluxregister), intent(inout) :: this
+    type(amrex_multifab), intent(inout) :: fluxes(amrex_spacedim)
+    real(amrex_real), intent(in) :: scale
+    integer :: dim
+    type(c_ptr) :: mf(amrex_spacedim)
+    do dim = 1, amrex_spacedim
+       mf(dim) = fluxes(dim)%p
+    end do
+    call amrex_fi_fluxregister_refluxandzero(this%p, mf, scale, amrex_geom(this%flev-1)%p)
+  end subroutine amrex_fluxregister_refluxandzero
 
 end module amrex_fluxregister_module
 
